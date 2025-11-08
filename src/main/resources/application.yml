@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: spring-boot-microservice-boilerplate
+    name: account-service
   profiles:
     active: dev
   config:
