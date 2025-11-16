@@ -1,5 +1,5 @@
 server:
-  port: 5000
+  port: 5001
 
 spring:
   application:
@@ -16,6 +16,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.igdevx.spring_boot_account_microservice: DEBUG
 
 eureka:
   client:
