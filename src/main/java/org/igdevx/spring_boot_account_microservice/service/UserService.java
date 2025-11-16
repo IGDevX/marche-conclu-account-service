@@ -1,6 +1,5 @@
 package org.igdevx.spring_boot_account_microservice.service;
 
-import org.hibernate.Hibernate;
 import org.igdevx.spring_boot_account_microservice.dto.*;
 import org.igdevx.spring_boot_account_microservice.exception.BadRequestException;
 import org.igdevx.spring_boot_account_microservice.exception.ResourceNotFoundException;
@@ -47,23 +46,6 @@ public class UserService {
         
         if (existingUser.isPresent()) {
             User user = existingUser.get();
-            System.out.println("DEBUG: User found with ID: " + user.getId());
-            System.out.println("DEBUG: User class: " + user.getClass().getName());
-            
-            Set<Profession> professions = user.getProfessions();
-            System.out.println("DEBUG: Professions field is null? " + (professions == null));
-            if (professions != null) {
-                System.out.println("DEBUG: Professions class type: " + professions.getClass().getName());
-                System.out.println("DEBUG: Professions collection size BEFORE initialize: " + professions.size());
-            }
-            
-            // Force Hibernate to initialize the professions collection using Hibernate.initialize()
-            Hibernate.initialize(professions);
-            
-            System.out.println("DEBUG: Professions collection size AFTER initialize: " + (professions == null ? "null" : professions.size() + " items"));
-            if (professions != null && !professions.isEmpty()) {
-                professions.forEach(p -> System.out.println("  - Profession: " + p.getId() + " - " + p.getNameEn()));
-            }
             return mapToUserProfileResponse(user);
         }
         
@@ -284,29 +266,20 @@ public class UserService {
     
     // Map Profession entities to DTOs
     private List<ProfessionDto> mapProfessionsToDtos(Set<Profession> professions) {
-        if (professions == null) {
-            System.out.println("DEBUG: professions is null");
+        if (professions == null || professions.isEmpty()) {
             return List.of();
         }
-        if (professions.isEmpty()) {
-            System.out.println("DEBUG: professions is empty");
-            return List.of();
-        }
-        
-        System.out.println("DEBUG: professions size = " + professions.size());
         
         // Create a defensive copy to avoid ConcurrentModificationException
         // when Hibernate is initializing the collection
         return new java.util.ArrayList<>(professions).stream()
-                .map(p -> {
-                    System.out.println("DEBUG: Mapping profession: " + p.getId() + " - " + p.getNameEn());
-                    return ProfessionDto.builder()
-                            .id(p.getId())
-                            .code(p.getCode())
-                            .nameEn(p.getNameEn())
-                            .nameFr(p.getNameFr())
-                            .build();
-                })
+                .map(p -> ProfessionDto.builder()
+                        .id(p.getId())
+                        .code(p.getCode())
+                        .nameEn(p.getNameEn())
+                        .nameFr(p.getNameFr())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
     
