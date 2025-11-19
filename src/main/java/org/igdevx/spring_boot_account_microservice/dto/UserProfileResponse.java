@@ -34,6 +34,11 @@ public class UserProfileResponse {
     private String hygieneCertifications;
     private String awards;
     
+    // Stripe Connect fields
+    private String stripeAccountId;
+    private String stripeAccountStatus;
+    private Boolean stripeOnboardingComplete;
+    
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

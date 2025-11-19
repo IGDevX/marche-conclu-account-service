@@ -79,8 +79,22 @@ public class UserService {
 
     // Update personal information
     public UserProfileResponse updatePersonalInfo(UUID keycloakId, UpdatePersonalInfoRequest request) {
-        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
-                .orElse(User.builder().keycloakId(keycloakId).build());
+        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId).orElse(null);
+        
+        // If user doesn't exist, create it first to avoid race conditions
+        if (user == null) {
+            try {
+                User newUser = User.builder()
+                        .keycloakId(keycloakId)
+                        .professions(new HashSet<>())
+                        .build();
+                user = userRepository.save(newUser);
+            } catch (Exception e) {
+                // Handle race condition: another thread created the user
+                user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found after creation race condition"));
+            }
+        }
         
         updateCommonFields(user, request.getBiography(), request.getWebsite(), 
                           request.getFacebook(), request.getInstagram(), request.getLinkedin());
@@ -103,8 +117,22 @@ public class UserService {
 
     // Create or update restaurant profile
     public UserProfileResponse createOrUpdateRestaurantProfile(UUID keycloakId, RestaurantProfileRequest request) {
-        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
-                .orElse(User.builder().keycloakId(keycloakId).build());
+        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId).orElse(null);
+        
+        // If user doesn't exist, create it first to avoid race conditions
+        if (user == null) {
+            try {
+                User newUser = User.builder()
+                        .keycloakId(keycloakId)
+                        .professions(new HashSet<>())
+                        .build();
+                user = userRepository.save(newUser);
+            } catch (Exception e) {
+                // Handle race condition: another thread created the user
+                user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found after creation race condition"));
+            }
+        }
         
         updateCommonFields(user, request.getBiography(), request.getWebsite(), 
                           request.getFacebook(), request.getInstagram(), request.getLinkedin());
@@ -170,8 +198,22 @@ public class UserService {
 
     // Create or update producer profile
     public UserProfileResponse createOrUpdateProducerProfile(UUID keycloakId, ProducerProfileRequest request) {
-        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
-                .orElse(User.builder().keycloakId(keycloakId).build());
+        User user = userRepository.findByKeycloakIdWithProfessions(keycloakId).orElse(null);
+        
+        // If user doesn't exist, create it first to avoid race conditions
+        if (user == null) {
+            try {
+                User newUser = User.builder()
+                        .keycloakId(keycloakId)
+                        .professions(new HashSet<>())
+                        .build();
+                user = userRepository.save(newUser);
+            } catch (Exception e) {
+                // Handle race condition: another thread created the user
+                user = userRepository.findByKeycloakIdWithProfessions(keycloakId)
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found after creation race condition"));
+            }
+        }
         
         updateCommonFields(user, request.getBiography(), request.getWebsite(), 
                           request.getFacebook(), request.getInstagram(), request.getLinkedin());
@@ -359,6 +401,9 @@ public class UserService {
                 .cuisineType(user.getCuisineType())
                 .hygieneCertifications(user.getHygieneCertifications())
                 .awards(user.getAwards())
+                .stripeAccountId(user.getStripeAccountId())
+                .stripeAccountStatus(user.getStripeAccountStatus())
+                .stripeOnboardingComplete(user.getStripeOnboardingComplete())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

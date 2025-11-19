@@ -52,6 +52,16 @@ public class User {
     private String hygieneCertifications;
     private String awards;
 
+    // Stripe Connect integration
+    @Column(name = "stripe_account_id")
+    private String stripeAccountId;
+
+    @Column(name = "stripe_account_status")
+    private String stripeAccountStatus; // pending, active, rejected, etc.
+
+    @Column(name = "stripe_onboarding_complete")
+    private Boolean stripeOnboardingComplete;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
