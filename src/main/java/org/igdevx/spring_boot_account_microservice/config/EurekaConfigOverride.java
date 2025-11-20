@@ -1,4 +1,4 @@
-package org.igdevx.spring_boot_microservice_boilerplate.config;
+package org.igdevx.spring_boot_account_microservice.config;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
