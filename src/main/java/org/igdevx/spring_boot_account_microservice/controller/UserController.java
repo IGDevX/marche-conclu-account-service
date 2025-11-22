@@ -3,7 +3,7 @@ package org.igdevx.spring_boot_account_microservice.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     // User creation is now handled by InternalController.getUserByKeycloakId()

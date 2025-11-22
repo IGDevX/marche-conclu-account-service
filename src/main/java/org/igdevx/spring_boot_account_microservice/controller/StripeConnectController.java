@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/account/stripe")
+@RequestMapping("/stripe")
 @Tag(name = "Stripe Connect", description = "Stripe Connect integration for connected accounts")
 public class StripeConnectController {
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/internal")
+@RequestMapping("/internal")
 @Tag(name = "Internal", description = "Internal API endpoints for service-to-service communication")
 public class InternalController {
 
