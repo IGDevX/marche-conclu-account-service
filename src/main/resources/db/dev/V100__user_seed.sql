@@ -11,6 +11,7 @@ INSERT INTO professions (code, name_en, name_fr) VALUES
     ('OLIVE_GROWER', 'Olive Grower', 'Oléiculteur'),
     ('CHEESEMAKER', 'Cheesemaker', 'Fromager');
 
+/*
 -- ============================================
 -- USERS
 -- ============================================
@@ -56,3 +57,4 @@ INSERT INTO users (
 -- Link user to professions (assuming profession IDs based on insertion order)
 INSERT INTO user_professions (user_id, profession_id) VALUES
     (1, 2); -- ORGANIC_FARMER
+*/

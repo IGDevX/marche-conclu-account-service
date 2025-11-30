@@ -37,6 +37,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // Get keycloak ID by user ID
+    public UUID getKeycloakIdByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+        return user.getKeycloakId();
+    }
+
     // Get or create user profile (thread-safe for race conditions)
     // Used by internal service-to-service communication
     @Transactional
